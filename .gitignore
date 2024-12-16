@@ -1,0 +1,44 @@
+##
+## EPITECH PROJECT, 2024
+## printf
+## File description:
+## .gitignore
+##
+
+# IDE
+.idea
+.vscode
+
+# Bin
+my_radar
+a.out
+libmy.a
+test
+
+# Build
+*.o
+*.out
+*.[od]
+*.cor
+valout
+
+# nix
+.direnv
+.pre-commit-config.yaml
+result
+
+# Cache
+.cache
+.fast
+
+# Coverage
+*.gc??
+testcmd
+tester.sh
+unit_tests
+
+# Python (CI)
+*.pyc
+
+#tkt
+tests/generator.py
