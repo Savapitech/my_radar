@@ -65,5 +65,5 @@ int create_window(size_t x, size_t y, rf_t *rf);
 int event_handler(rf_t *rf);
 
 // sprites
-sprite_t *create_sprites(size_t nb, char *texture_path);
+sprite_t *create_sprites(size_t nb, char const *texture_path);
 #endif /* RADAR_H */

@@ -23,7 +23,12 @@ int radar(void)
 
     if (create_window(R_WINDOW_SIZE, &rf))
         return FAILURE_MSG("Failed to create window.");
-    create_sprites(10, "test");
+    rf.planes = create_sprites(10, "assets/img/plane.png");
+    if (rf.planes == NULL)
+        return RETURN_FAILURE;
+    rf.towers = create_sprites(4, "assets/img/tower.png");
+    if (rf.towers == NULL)
+        return RETURN_FAILURE;
     for (; sfRenderWindow_isOpen(rf.window);) {
         display_all(&rf);
         event_handler(&rf);
