@@ -7,7 +7,7 @@
 
 #include "my.h"
 
-int my_printf(char *fmt, ...)
+int my_printf(char const *fmt, ...)
 {
     va_list args;
     int result = 0;
