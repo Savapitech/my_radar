@@ -42,14 +42,14 @@ CFLAGS += -Wwrite-strings -Werror=declaration-after-statement
 CFLAGS += -Werror=format-nonliteral -Werror=int-conversion -Werror=return-type
 CFLAGS += -Werror=vla-larger-than=0 -Wno-discarded-qualifiers
 
-DEBUG_FLAGS := -DR_DEBUG_MODE
+DEBUG_FLAGS := -DR_DEBUG_MODE -g3
 
 LDFLAGS += -L .
 LDLIBS := -lmy -lcsfml-graphics
 
 include utils.mk
 
-oui: $(NAME)
+all: $(NAME)
 
 $(BUILD_DIR)/%.o: %.c
 	@ mkdir -p $(dir $@)
@@ -76,16 +76,10 @@ fclean:
 	@ $(LOG_TIME) "$(C_YELLOW) RM $(C_PURPLE) $(LIB_NAME) $(C_RESET)"
 
 .NOTPARALLEL: re
-re:	fclean oui
+re:	fclean all
 
 .NOTPARALLEL: debug
 debug: CFLAGS += $(DEBUG_FLAGS)
-debug: oui
+debug: all
 
-test: $(NAME) $(TEST_OBJ)
-	$(CC) $(CFLAGS) -o $@ $(TEST_OBJ) $(LDFLAGS) $(LDLIBS)
-
-tests_run: test
-	./$<
-
-.PHONY: all clean fclean re test tests_run
+.PHONY: all clean fclean re
