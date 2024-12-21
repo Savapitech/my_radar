@@ -53,7 +53,7 @@ typedef enum {
     FLAGS_PAD_RIGHT = 1 << 0
 } flags_bit_shifts_t;
 
-int my_printf(char *, ...);
+int my_printf(char const *, ...);
 char *baby_revstr(char *);
 int baby_getnbr(char const *);
 int baby_put_nbr(int, flags_t *, int);
@@ -64,8 +64,7 @@ int baby_stridx(char const *, char);
 int baby_strlen(char *);
 size_t baby_intlen(size_t truc, int);
 int baby_strpnum(char **);
-int my_printf(char *, ...);
-int printf_parser(char *, va_list);
+int printf_parser(char const *, va_list);
 void printf_put_float(flags_t *);
 void printf_put_hex(flags_t *);
 void printf_put_nbr(flags_t *);
