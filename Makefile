@@ -12,6 +12,10 @@ NAME := my_radar
 LIB_NAME := libmy.a
 
 SRC := $(wildcard src/*.c)
+SRC += $(wildcard src/render/*.c)
+SRC += $(wildcard src/window/*.c)
+SRC += $(wildcard src/events/*.c)
+SRC += $(wildcard src/sprites/*.c)
 
 LIB_SRC := $(wildcard lib/my/*.c)
 LIB_SRC += $(wildcard lib/my/printf/*.c)
@@ -38,8 +42,10 @@ CFLAGS += -Wwrite-strings -Werror=declaration-after-statement
 CFLAGS += -Werror=format-nonliteral -Werror=int-conversion -Werror=return-type
 CFLAGS += -Werror=vla-larger-than=0 -Wno-discarded-qualifiers
 
+DEBUG_FLAGS := -DR_DEBUG_MODE
+
 LDFLAGS += -L .
-LDLIBS := -lmy
+LDLIBS := -lmy -lcsfml-graphics
 
 include utils.mk
 
@@ -71,6 +77,10 @@ fclean:
 
 .NOTPARALLEL: re
 re:	fclean oui
+
+.NOTPARALLEL: debug
+debug: CFLAGS += $(DEBUG_FLAGS)
+debug: oui
 
 test: $(NAME) $(TEST_OBJ)
 	$(CC) $(CFLAGS) -o $@ $(TEST_OBJ) $(LDFLAGS) $(LDLIBS)
