@@ -66,4 +66,6 @@ int event_handler(rf_t *rf);
 
 // sprites
 sprite_t *create_sprites(size_t nb, char const *texture_path);
+int set_pos_scale(sprite_t *sprites, size_t nb, sfVector2f pos,
+    sfVector2f scale);
 #endif /* RADAR_H */
