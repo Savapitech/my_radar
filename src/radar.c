@@ -37,7 +37,7 @@ int radar_loop(rf_t *rf)
     return RETURN_SUCCESS;
 }
 
-int radar(void)
+int radar(char **argv)
 {
     rf_t rf = { 0 };
 
@@ -48,6 +48,8 @@ int radar(void)
         return RETURN_FAILURE;
     rf.towers = create_sprites(4, "assets/img/tower.png");
     if (rf.towers == NULL)
+        return RETURN_FAILURE;
+    if (parser(&rf, argv[1]) == RETURN_FAILURE)
         return RETURN_FAILURE;
     radar_loop(&rf);
     if (destroy_all(&rf))

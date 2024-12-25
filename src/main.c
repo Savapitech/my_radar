@@ -30,5 +30,5 @@ int main(int argc, char **argv)
     if (my_strcmp(argv[1], "-h") == 0)
         return (printf_usages(), RETURN_SUCCESS);
     MY_DEBUG_MSG("Debug mode activated");
-    return radar();
+    return radar(argv);
 }

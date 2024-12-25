@@ -19,6 +19,8 @@ int my_getnbr(char const *str)
         result = result * 10 + (str[i] - '0');
         if (result > INT_MAX)
             return INT_MAX;
+        if (str[i] == ' ')
+            break;
         i++;
     }
     return (int)result;

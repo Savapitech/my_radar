@@ -45,16 +45,21 @@ typedef struct {
     sfTexture *texture;
     sfSprite *sprite;
     sfVector2f pos;
+    sfVector2f start_pos;
+    sfVector2f end_pos;
     sfVector2u size;
 } sprite_t;
 
 typedef struct {
     sprite_t *planes;
     sprite_t *towers;
+    size_t planes_nb;
+    size_t towers_nb;
     sfRenderWindow *window;
 } rf_t;
 
-int radar(void);
+int radar(char **argv);
+int parser(rf_t *rf, char *path);
 
 // render
 int display_all(rf_t *rf);
