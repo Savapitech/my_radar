@@ -39,11 +39,8 @@ int set_pos_scale(sprite_t *sprites, size_t nb, sfVector2f pos,
         if (sprites[i].sprite == NULL)
             continue;
         sfSprite_setPosition(sprites[i].sprite, pos);
-        //MY_DEBUG("Set sprite #%01d positon to %01d, %01d\n", i, pos.x, pos.y);
         if (scale.y && scale.x) {
             sfSprite_setScale(sprites[i].sprite, scale);
-            //MY_DEBUG("Set sprite #%01d scale to %.2f, %.2f\n", i, scale.x,
-                //scale.y);
         }
     }
     return RETURN_SUCCESS;
@@ -57,7 +54,6 @@ int move_sprites(sprite_t *sprites, size_t nb, sfVector2f pos)
         if (sprites[i].sprite == NULL)
             continue;
         sfSprite_move(sprites[i].sprite, pos);
-        //MY_DEBUG("Set sprite #%01d positon to %01d, %01d\n", i, pos.x, pos.y);
     }
     return RETURN_SUCCESS;
 }
