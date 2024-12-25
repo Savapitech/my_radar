@@ -52,10 +52,6 @@ jobs:
             --extra-experimental-features 'nix-command flakes' \
             -- . --ignore-rules=C-O1
 
-      - name: Build project
-        run: |
-          make
-
   sync_repository:
     needs: [ check_the_repository_state ]
     if: ${{ !github.event.pull_request }}
