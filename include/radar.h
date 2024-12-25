@@ -17,6 +17,7 @@
     #define FAILURE_MSG_PTR(str) (my_puterr(str "\n"), NULL)
     #define R_WINDOW_NAME "War Thunder Multiplayer"
     #define R_WINDOW_SIZE 1920, 1080
+    #define MICRO_TO_SEC(time) time.microseconds / 1000000.0
 
     #ifdef R_DEBUG_MODE
         #define HEAD __FILE_NAME__, __LINE__
@@ -68,4 +69,5 @@ int event_handler(rf_t *rf);
 sprite_t *create_sprites(size_t nb, char const *texture_path);
 int set_pos_scale(sprite_t *sprites, size_t nb, sfVector2f pos,
     sfVector2f scale);
+int move_sprites(sprite_t *sprites, size_t nb, sfVector2f pos);
 #endif /* RADAR_H */

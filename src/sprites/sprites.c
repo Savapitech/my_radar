@@ -48,3 +48,16 @@ int set_pos_scale(sprite_t *sprites, size_t nb, sfVector2f pos,
     }
     return RETURN_SUCCESS;
 }
+
+int move_sprites(sprite_t *sprites, size_t nb, sfVector2f pos)
+{
+    if (sprites == NULL || nb < 1)
+        return FAILURE_MSG("Cannot set scale/pos of sprite");
+    for (size_t i = 0; i < nb; i++) {
+        if (sprites[i].sprite == NULL)
+            continue;
+        sfSprite_move(sprites[i].sprite, pos);
+        MY_DEBUG("Set sprite #%01d positon to %01d, %01d\n", i, pos.x, pos.y);
+    }
+    return RETURN_SUCCESS;
+}
