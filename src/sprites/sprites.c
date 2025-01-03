@@ -61,7 +61,9 @@ int move_sprites(sprite_t *sprites, size_t nb, float delta)
             sprites[i].pos.y - sprites[i].end_pos.y < 1) {
             sprites[i].active = sfFalse;
             continue;
-        } 
+        }
+        sfSprite_setRotation(sprites[i].sprite, sprites[i].rotation * 180 /
+            M_PI);
         sfSprite_setPosition(sprites[i].sprite, sprites[i].pos);
         MY_DEBUG("Move plane to %0.1f, %0.1f %f\n", sprites[i].pos.x,
             sprites[i].pos.y, delta);
