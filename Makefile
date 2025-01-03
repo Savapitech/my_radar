@@ -45,7 +45,7 @@ CFLAGS += -Werror=vla-larger-than=0 -Wno-discarded-qualifiers
 DEBUG_FLAGS := -DR_DEBUG_MODE -g3
 
 LDFLAGS += -L .
-LDLIBS := -lmy -lcsfml-graphics -lcsfml-window -lcsfml-system
+LDLIBS := -lmy -lcsfml-graphics -lcsfml-window -lcsfml-system -lm
 
 include utils.mk
 

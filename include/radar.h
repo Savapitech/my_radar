@@ -44,10 +44,11 @@
 typedef struct {
     sfTexture *texture;
     sfSprite *sprite;
+    float rotation;
     sfVector2f pos;
-    sfVector2f start_pos;
     sfVector2f end_pos;
     sfVector2u size;
+    bool active;
 } sprite_t;
 
 typedef struct {
@@ -55,6 +56,7 @@ typedef struct {
     sprite_t *towers;
     size_t planes_nb;
     size_t towers_nb;
+    sfInt64 prev_delta;
     sfRenderWindow *window;
 } rf_t;
 
@@ -71,8 +73,9 @@ int create_window(size_t x, size_t y, rf_t *rf);
 int event_handler(rf_t *rf);
 
 // sprites
-sprite_t *create_sprites(size_t nb, char const *texture_path);
+sprite_t *create_sprites(size_t nb, char const *texture_path,
+    sfVector2f scale);
 int set_pos_scale(sprite_t *sprites, size_t nb, sfVector2f pos,
     sfVector2f scale);
-int move_sprites(sprite_t *sprites, size_t nb, sfVector2f pos);
+int move_sprites(sprite_t *sprites, size_t nb, float delta);
 #endif /* RADAR_H */

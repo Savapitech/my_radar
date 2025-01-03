@@ -22,16 +22,22 @@ static
 int radar_loop(rf_t *rf)
 {
     sfClock *clock1 = sfClock_create();
+    sfClock *delta_clock = sfClock_create();
+    sfTime delta;
 
     if (!clock1)
         return FAILURE_MSG("Cannot create clock");
+    sfRenderWindow_setFramerateLimit(rf->window, 30);
     for (; sfRenderWindow_isOpen(rf->window);) {
         display_all(rf);
         event_handler(rf);
+        delta = sfClock_getElapsedTime(delta_clock);
         if (MICRO_TO_SEC(sfClock_getElapsedTime(clock1)) > 0.001) {
-            move_sprites(rf->planes, 1000, (sfVector2f){ 1, 0 });
+            move_sprites(rf->planes, 10, (delta.microseconds -
+                rf->prev_delta) / 1000000.0);
             sfClock_restart(clock1);
         }
+        rf->prev_delta = delta.microseconds;
     }
     sfClock_destroy(clock1);
     return RETURN_SUCCESS;
@@ -43,10 +49,12 @@ int radar(char **argv)
 
     if (create_window(R_WINDOW_SIZE, &rf))
         return FAILURE_MSG("Failed to create window.");
-    rf.planes = create_sprites(1000, "assets/img/plane.png");
+    rf.planes = create_sprites(10, "assets/img/plane.png",
+        (sfVector2f){ 0.2, 0.2 });
     if (rf.planes == NULL)
         return RETURN_FAILURE;
-    rf.towers = create_sprites(4, "assets/img/tower.png");
+    rf.towers = create_sprites(4, "assets/img/tower.png",
+        (sfVector2f){ 1, 1 });
     if (rf.towers == NULL)
         return RETURN_FAILURE;
     if (parser(&rf, argv[1]) == RETURN_FAILURE)
