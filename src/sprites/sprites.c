@@ -32,6 +32,23 @@ sprite_t *create_sprites(size_t nb, char const *texture_path, sfVector2f scale)
     return sprites;
 }
 
+int create_plane_hitboxes(sprite_t *sprites, size_t nb)
+{
+    if (sprites == NULL)
+        return FAILURE_MSG("Sprites is null when creating plane hitbox");
+    for (size_t i = 0; i < nb; i++) {
+        sprites[i].hitbox = sfRectangleShape_create();
+        if (sprites[i].hitbox == NULL)
+            return FAILURE_MSG("Cannot create rect shape for plane hitbox");
+        sfRectangleShape_setFillColor(sprites[i].hitbox, sfTransparent);
+        sfRectangleShape_setOutlineColor(sprites[i].hitbox, sfRed);
+        sfRectangleShape_setOutlineThickness(sprites[i].hitbox, 1.0);
+        sfRectangleShape_setSize(sprites[i].hitbox, (sfVector2f){ 20, 20 });
+        sfRectangleShape_setPosition(sprites[i].hitbox, sprites[i].pos);
+    }
+    return RETURN_SUCCESS;
+}
+
 int set_pos_scale(sprite_t *sprites, size_t nb, sfVector2f pos,
     sfVector2f scale)
 {
@@ -65,8 +82,9 @@ int move_sprites(sprite_t *sprites, size_t nb, float delta)
         sfSprite_setRotation(sprites[i].sprite, sprites[i].rotation * 180 /
             M_PI);
         sfSprite_setPosition(sprites[i].sprite, sprites[i].pos);
-        MY_DEBUG("Move plane to %0.1f, %0.1f %f\n", sprites[i].pos.x,
-            sprites[i].pos.y, delta);
+        sfRectangleShape_setPosition(sprites[i].hitbox, sprites[i].pos);
+        sfRectangleShape_setRotation(sprites[i].hitbox, sprites[i].rotation *
+            180 / M_PI);
     }
     return RETURN_SUCCESS;
 }

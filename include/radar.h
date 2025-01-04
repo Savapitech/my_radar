@@ -44,6 +44,7 @@
 typedef struct {
     sfTexture *texture;
     sfSprite *sprite;
+    sfRectangleShape *hitbox;
     float rotation;
     sfVector2f pos;
     sfVector2f end_pos;
@@ -78,4 +79,5 @@ sprite_t *create_sprites(size_t nb, char const *texture_path,
 int set_pos_scale(sprite_t *sprites, size_t nb, sfVector2f pos,
     sfVector2f scale);
 int move_sprites(sprite_t *sprites, size_t nb, float delta);
+int create_plane_hitboxes(sprite_t *sprites, size_t nb);
 #endif /* RADAR_H */

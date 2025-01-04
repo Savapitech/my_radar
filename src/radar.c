@@ -50,8 +50,10 @@ int radar(char **argv)
     if (create_window(R_WINDOW_SIZE, &rf))
         return FAILURE_MSG("Failed to create window.");
     rf.planes = create_sprites(10, "assets/img/plane.png",
-        (sfVector2f){ 0.2, 0.2 });
+        (sfVector2f){ 0.07125, 0.07125 });
     if (rf.planes == NULL)
+        return RETURN_FAILURE;
+    if (create_plane_hitboxes(rf.planes, 10) == RETURN_FAILURE)
         return RETURN_FAILURE;
     rf.towers = create_sprites(4, "assets/img/tower.png",
         (sfVector2f){ 1, 1 });
