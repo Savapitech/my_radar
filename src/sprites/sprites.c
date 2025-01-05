@@ -21,6 +21,7 @@ sprite_t *create_sprites(size_t nb, char const *texture_path, sfVector2f scale)
     if (texture == NULL)
         return (free(sprites), NULL);
     for (size_t i = 0; i < nb; i++) {
+        sprites[i] = (sprite_t){ 0, .active = sfTrue };
         sprites[i].texture = texture;
         sprites[i].sprite = sfSprite_create();
         if (sprites[i].sprite == NULL)
