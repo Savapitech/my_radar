@@ -84,7 +84,7 @@ sprite_t *create_sprites(size_t nb, char const *texture_path,
     sfVector2f scale);
 int set_pos_scale(sprite_t *sprites, size_t nb, sfVector2f pos,
     sfVector2f scale);
-int move_sprites(sprite_t *sprites, size_t nb, float delta);
+int move_sprites(rf_t *rf, sprite_t *sprites, size_t nb, float delta);
 int create_plane_hitboxes(sprite_t *sprites, size_t nb);
 int create_tower_hitboxes(sprite_t *sprites, size_t nb);
 #endif /* RADAR_H */

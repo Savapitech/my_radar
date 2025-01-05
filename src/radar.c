@@ -31,7 +31,7 @@ int radar_loop(rf_t *rf)
         display_all(rf);
         event_handler(rf);
         delta = sfClock_getElapsedTime(delta_clock);
-        move_sprites(rf->planes, rf->planes_nb, (delta.microseconds -
+        move_sprites(rf, rf->planes, rf->planes_nb, (delta.microseconds -
             rf->prev_delta) / 1000000.0);
         rf->prev_delta = delta.microseconds;
     }
