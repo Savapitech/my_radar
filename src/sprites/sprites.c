@@ -50,6 +50,25 @@ int create_plane_hitboxes(sprite_t *sprites, size_t nb)
     return RETURN_SUCCESS;
 }
 
+int create_tower_hitboxes(sprite_t *sprites, size_t nb)
+{
+    if (sprites == NULL)
+        return FAILURE_MSG("Sprites is null when creating tower hitbox");
+    for (size_t i = 0; i < nb; i++) {
+        sprites[i].t_hitbox = sfCircleShape_create();
+        if (sprites[i].t_hitbox == NULL)
+            return FAILURE_MSG("Cannot create circle shape for tower hitbox");
+        sfCircleShape_setFillColor(sprites[i].t_hitbox, sfTransparent);
+        sfCircleShape_setOutlineColor(sprites[i].t_hitbox, sfBlue);
+        sfCircleShape_setOutlineThickness(sprites[i].t_hitbox, 1.0);
+        sfCircleShape_setRadius(sprites[i].t_hitbox, sprites[i].radius);
+        sfCircleShape_setPosition(sprites[i].t_hitbox,
+            (sfVector2f){ sprites[i].pos.x - sprites[i].radius,
+            sprites[i].pos.y - sprites[i].radius });
+    }
+    return RETURN_SUCCESS;
+}
+
 int set_pos_scale(sprite_t *sprites, size_t nb, sfVector2f pos,
     sfVector2f scale)
 {

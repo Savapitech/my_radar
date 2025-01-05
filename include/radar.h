@@ -45,20 +45,26 @@ typedef struct {
     sfTexture *texture;
     sfSprite *sprite;
     sfRectangleShape *hitbox;
+    sfCircleShape *t_hitbox;
     float rotation;
     sfVector2f pos;
     sfVector2f end_pos;
     sfVector2u size;
+    size_t radius;
     bool active;
 } sprite_t;
 
 typedef struct {
     sprite_t *planes;
     sprite_t *towers;
+    sprite_t background;
     size_t planes_nb;
     size_t towers_nb;
     sfInt64 prev_delta;
     sfRenderWindow *window;
+    size_t planes_i;
+    size_t towers_i;
+    bool show_hitboxes;
 } rf_t;
 
 int radar(char **argv);
@@ -80,4 +86,5 @@ int set_pos_scale(sprite_t *sprites, size_t nb, sfVector2f pos,
     sfVector2f scale);
 int move_sprites(sprite_t *sprites, size_t nb, float delta);
 int create_plane_hitboxes(sprite_t *sprites, size_t nb);
+int create_tower_hitboxes(sprite_t *sprites, size_t nb);
 #endif /* RADAR_H */
