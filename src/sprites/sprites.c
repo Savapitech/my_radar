@@ -74,8 +74,8 @@ int move_sprites(sprite_t *sprites, size_t nb, float delta)
             continue;
         sprites[i].pos.x += cosf(sprites[i].rotation) * 100.0 * delta;
         sprites[i].pos.y += sinf(sprites[i].rotation) * 100.0 * delta;
-        if (sprites[i].pos.x - sprites[i].end_pos.x < 1 &&
-            sprites[i].pos.y - sprites[i].end_pos.y < 1) {
+        if (!sprites[i].active || (sprites[i].pos.x - sprites[i].end_pos.x < 1
+            && sprites[i].pos.y - sprites[i].end_pos.y < 1)) {
             sprites[i].active = sfFalse;
             continue;
         }
