@@ -26,7 +26,7 @@ int radar_loop(rf_t *rf)
 
     if (!delta_clock)
         return FAILURE_MSG("Cannot create delta clock");
-    sfRenderWindow_setFramerateLimit(rf->window, 30);
+    sfRenderWindow_setFramerateLimit(rf->window, 5);
     for (; sfRenderWindow_isOpen(rf->window);) {
         display_all(rf);
         event_handler(rf);

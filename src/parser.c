@@ -34,6 +34,7 @@ int parse_plane(rf_t *rf, char *buffer)
     MY_DEBUG("Plane #%01d start pos: %01d, %01d\n", i, (int)pos.x,
         (int)pos.y);
     rf->planes[i].pos = pos;
+    sfSprite_setPosition(rf->planes[i].sprite, pos);
     rf->planes[i].end_pos = (sfVector2f){ 500, 300 };
     rf->planes[i].rotation = atan2f(rf->planes[i].end_pos.y - pos.y,
         rf->planes[i].end_pos.x - pos.x);

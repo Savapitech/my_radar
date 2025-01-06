@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics.h>
 #include <math.h>
+#include <stdio.h>
 
 #include "radar.h"
 
@@ -46,13 +47,37 @@ bool plane_in_tower_area(rf_t *rf, size_t plane_i)
     return false;
 }
 
+int plane_hit_another(sprite_t *planes, size_t i, size_t nb)
+{
+    size_t j = 0;
+    double distance = 0;
+    sfVector2f plane1_pos = planes[i].pos;
+    sfVector2f plane2_pos = { 0 };
+
+    for (; j < nb; j++) {
+        if (j != i && planes[j].active) {
+            plane2_pos = planes[j].pos;
+            distance = sqrt((double)pow(plane1_pos.x - plane2_pos.x, 2) +
+                (double)pow(plane1_pos.y - plane2_pos.y, 2));
+            printf("Plane1 pos %01.1f, %01.1f plane2 pos %01.1f, %01.1f"
+                " Plane distance %01f\n", plane1_pos.x, plane1_pos.y,
+                plane2_pos.x, plane2_pos.y, distance);
+            if (distance < 10)
+                return (printf("Plane #%01d hit #%01d\n", i, j), j);
+        }
+    }
+    return -1;
+}
+
 static
 void move_sprites_set_pos(sprite_t *sprites, size_t i)
 {
     sfSprite_setRotation(sprites[i].sprite, sprites[i].rotation * 180 /
         M_PI);
-    sfSprite_setPosition(sprites[i].sprite, sprites[i].pos);
-    sfRectangleShape_setPosition(sprites[i].hitbox, sprites[i].pos);
+    sfSprite_setPosition(sprites[i].sprite, (sfVector2f){
+        sprites[i].pos.x - 10, sprites[i].pos.y - 10});
+    sfRectangleShape_setPosition(sprites[i].hitbox, (sfVector2f){
+        sprites[i].pos.x - 10, sprites[i].pos.y - 10});
     sfRectangleShape_setRotation(sprites[i].hitbox, sprites[i].rotation *
         180 / M_PI);
 }
@@ -72,12 +97,17 @@ int move_sprites(rf_t *rf, sprite_t *sprites, size_t nb, float delta)
             continue;
         }
         move_sprites_set_pos(sprites, i);
-        if (plane_in_tower_area(rf, i))
+        if (plane_in_tower_area(rf, i)) {
             sfRectangleShape_setOutlineColor(rf->planes[i].hitbox,
                 sfGreen);
-        else
-            sfRectangleShape_setOutlineColor(rf->planes[i].hitbox,
-                sfRed);
+            continue;
+        }
+        sfRectangleShape_setOutlineColor(rf->planes[i].hitbox,
+            sfRed);
+        if (plane_hit_another(sprites, i, rf->planes_nb) != -1) {
+            rf->planes[i].active = sfFalse;
+            my_printf("Plane #%01d hit a plane !\n", i);
+        }
     }
     return RETURN_SUCCESS;
 }
