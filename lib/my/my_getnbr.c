@@ -5,6 +5,7 @@
 ** my_getnbr.c
 */
 
+#include <ctype.h>
 #include <limits.h>
 
 int my_getnbr(char const *str)
@@ -12,8 +13,7 @@ int my_getnbr(char const *str)
     unsigned long long result = 0;
     int i = 0;
 
-    while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' ||
-        str[i] == '\r' || str[i] == '\f' || str[i] == '\v')
+    while (isblank(str[i]))
         i++;
     while (str[i] >= '0' && str[i] <= '9') {
         result = result * 10 + (str[i] - '0');

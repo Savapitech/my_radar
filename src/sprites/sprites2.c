@@ -59,11 +59,11 @@ int plane_hit_another(sprite_t *planes, size_t i, size_t nb)
             plane2_pos = planes[j].pos;
             distance = sqrt((double)pow(plane1_pos.x - plane2_pos.x, 2) +
                 (double)pow(plane1_pos.y - plane2_pos.y, 2));
-            printf("Plane1 pos %01.1f, %01.1f plane2 pos %01.1f, %01.1f"
-                " Plane distance %01f\n", plane1_pos.x, plane1_pos.y,
-                plane2_pos.x, plane2_pos.y, distance);
-            if (distance < 10)
-                return (printf("Plane #%01d hit #%01d\n", i, j), j);
+            if (distance < 22) {
+                planes[i].active = sfFalse;
+                planes[j].active = sfFalse;
+                return (j);
+            }
         }
     }
     return -1;
@@ -82,21 +82,37 @@ void move_sprites_set_pos(sprite_t *sprites, size_t i)
         180 / M_PI);
 }
 
-int move_sprites(rf_t *rf, sprite_t *sprites, size_t nb, float delta)
+static
+bool calc_plane_pos(rf_t *rf, sfClock *delta_clock, size_t i, float delta)
 {
+    sprite_t *sprites = rf->planes;
+
+    if (sprites[i].time_to_take_off >
+        sfClock_getElapsedTime(delta_clock).microseconds / 1000000.0 ||
+        sprites[i].sprite == NULL || !sprites[i].active)
+            return true;
+    sprites[i].pos.x += cosf(sprites[i].rotation) * sprites[i].speed *
+        delta;
+    sprites[i].pos.y += sinf(sprites[i].rotation) * sprites[i].speed *
+        delta;
+    if (!sprites[i].active || (sprites[i].pos.x - sprites[i].end_pos.x < 1
+        && sprites[i].pos.y - sprites[i].end_pos.y < 1)) {
+        sprites[i].active = sfFalse;
+            return true;
+    }
+    move_sprites_set_pos(sprites, i);
+    return false;
+}
+
+int move_sprites(rf_t *rf, size_t nb, sfClock *delta_clock, float delta)
+{
+    sprite_t *sprites = rf->planes;
+
     if (sprites == NULL || nb < 1)
-        return FAILURE_MSG("Cannot set scale/pos of sprite");
+        return FAILURE_MSG("Cannot set pos of sprite");
     for (size_t i = 0; i < nb; i++) {
-        if (sprites[i].sprite == NULL || !sprites[i].active)
+        if (calc_plane_pos(rf, delta_clock, i, delta))
             continue;
-        sprites[i].pos.x += cosf(sprites[i].rotation) * 100.0 * delta;
-        sprites[i].pos.y += sinf(sprites[i].rotation) * 100.0 * delta;
-        if (!sprites[i].active || (sprites[i].pos.x - sprites[i].end_pos.x < 1
-            && sprites[i].pos.y - sprites[i].end_pos.y < 1)) {
-            sprites[i].active = sfFalse;
-            continue;
-        }
-        move_sprites_set_pos(sprites, i);
         if (plane_in_tower_area(rf, i)) {
             sfRectangleShape_setOutlineColor(rf->planes[i].hitbox,
                 sfGreen);

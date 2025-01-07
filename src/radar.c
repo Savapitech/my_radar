@@ -26,13 +26,13 @@ int radar_loop(rf_t *rf)
 
     if (!delta_clock)
         return FAILURE_MSG("Cannot create delta clock");
-    sfRenderWindow_setFramerateLimit(rf->window, 5);
+    sfRenderWindow_setFramerateLimit(rf->window, 30);
     for (; sfRenderWindow_isOpen(rf->window);) {
         display_all(rf);
         event_handler(rf);
         delta = sfClock_getElapsedTime(delta_clock);
-        move_sprites(rf, rf->planes, rf->planes_nb, (delta.microseconds -
-            rf->prev_delta) / 1000000.0);
+        move_sprites(rf, rf->planes_nb, delta_clock,
+            (delta.microseconds - rf->prev_delta) / 1000000.0);
         rf->prev_delta = delta.microseconds;
     }
     sfClock_destroy(delta_clock);
@@ -54,7 +54,7 @@ int create_background(rf_t *rf, char const *path)
 
 int radar(char **argv)
 {
-    rf_t rf = { 0, .show_hitboxes = sfFalse };
+    rf_t rf = { 0, .show_hitboxes = sfFalse, .display_sprites = sfTrue };
 
     if (create_window(R_WINDOW_SIZE, &rf))
         return FAILURE_MSG("Failed to create window.");

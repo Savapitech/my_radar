@@ -14,30 +14,36 @@
 #include "radar.h"
 
 static
+void parse_plane_buffer(rf_t *rf, char *buffer, size_t i)
+{
+    rf->planes[i].pos.x = (float)my_getnbr(buffer);
+    buffer += baby_intlen((int)rf->planes[i].pos.x, 10) + 1;
+    rf->planes[i].pos.y = (float)my_getnbr(buffer);
+    buffer += baby_intlen((int)rf->planes[i].pos.x, 10) + 1;
+    rf->planes[i].end_pos.x = (float)my_getnbr(buffer);
+    buffer += baby_intlen((int)rf->planes[i].end_pos.x, 10) + 1;
+    rf->planes[i].end_pos.y = (float)my_getnbr(buffer);
+    buffer += baby_intlen((int)rf->planes[i].end_pos.y, 10) + 1;
+    rf->planes[i].speed = my_getnbr(buffer);
+    buffer += baby_intlen(rf->planes[i].speed, 10) + 1;
+    rf->planes[i].time_to_take_off = my_getnbr(buffer);
+    buffer += baby_intlen(rf->planes[i].time_to_take_off, 10) + 1;
+}
+
+static
 int parse_plane(rf_t *rf, char *buffer)
 {
-    sfVector2f pos = { 0 };
     size_t i = rf->planes_i;
 
     buffer++;
     if (!isdigit(*buffer) && !isblank(*buffer))
         return RETURN_FAILURE;
-    for (; isblank(*buffer); buffer++);
-    if (!isdigit(*buffer))
-        return RETURN_FAILURE;
-    pos.x = (float)my_getnbr(buffer);
-    for (; !isblank(*buffer) && *buffer != '\0'; buffer++);
-    buffer++;
-    if (!isdigit(*buffer) || *buffer == '\0')
-        return RETURN_FAILURE;
-    pos.y = (float)my_getnbr(buffer);
-    MY_DEBUG("Plane #%01d start pos: %01d, %01d\n", i, (int)pos.x,
-        (int)pos.y);
-    rf->planes[i].pos = pos;
-    sfSprite_setPosition(rf->planes[i].sprite, pos);
-    rf->planes[i].end_pos = (sfVector2f){ 500, 300 };
-    rf->planes[i].rotation = atan2f(rf->planes[i].end_pos.y - pos.y,
-        rf->planes[i].end_pos.x - pos.x);
+    parse_plane_buffer(rf, buffer, i);
+    MY_DEBUG("Plane #%01d start pos: %01d, %01d\n", i,
+        (int)rf->planes[i].end_pos.x, (int)rf->planes[i].end_pos.y);
+    sfSprite_setPosition(rf->planes[i].sprite, rf->planes[i].pos);
+    rf->planes[i].rotation = atan2f(rf->planes[i].end_pos.y -
+        rf->planes[i].pos.y, rf->planes[i].end_pos.x - rf->planes[i].pos.x);
     rf->planes_i++;
     return RETURN_SUCCESS;
 }
@@ -45,28 +51,23 @@ int parse_plane(rf_t *rf, char *buffer)
 static
 int parse_tower(rf_t *rf, char *buffer)
 {
-    sfVector2f pos = { 0 };
     size_t i = rf->towers_i;
 
     buffer++;
     if (!isdigit(*buffer) && !isblank(*buffer))
         return RETURN_FAILURE;
-    for (; isblank(*buffer); buffer++);
-    if (!isdigit(*buffer))
-        return RETURN_FAILURE;
-    pos.x = (float)my_getnbr(buffer);
-    for (; !isblank(*buffer) && *buffer != '\0'; buffer++);
-    buffer++;
-    if (!isdigit(*buffer) || *buffer == '\0')
-        return RETURN_FAILURE;
-    pos.y = (float)my_getnbr(buffer);
-    MY_DEBUG("Tower #%01d start pos: %01d, %01d\n", i, (int)pos.x,
-        (int)pos.y);
-    rf->towers[i].pos = pos;
-    rf->towers[i].radius = 250;
+    rf->towers[i].pos.x = (float)my_getnbr(buffer);
+    buffer += baby_intlen((int)rf->towers[i].pos.x, 10) + 1;
+    rf->towers[i].pos.y = (float)my_getnbr(buffer);
+    buffer += baby_intlen((int)rf->towers[i].pos.y, 10) + 1;
+    rf->towers[i].radius = (float)my_getnbr(buffer);
+    buffer += baby_intlen(rf->towers[i].radius, 10) + 1;
+    MY_DEBUG("Tower #%01d pos: %01d, %01d\n", i,
+        (int)rf->towers[i].pos.x, (int)rf->towers[i].pos.y);
     rf->towers_i++;
-    sfSprite_setPosition(rf->towers[i].sprite, (sfVector2f){ pos.x - 38.4,
-        pos.y - 38.4 });
+    sfSprite_setPosition(rf->towers[i].sprite,
+        (sfVector2f){ rf->towers[i].pos.x - 38.4,
+        rf->towers[i].pos.y - 38.4 });
     return RETURN_SUCCESS;
 }
 

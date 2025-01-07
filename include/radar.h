@@ -49,6 +49,8 @@ typedef struct {
     float rotation;
     sfVector2f pos;
     sfVector2f end_pos;
+    int speed;
+    int time_to_take_off;
     sfVector2u size;
     size_t radius;
     bool active;
@@ -65,6 +67,7 @@ typedef struct {
     size_t planes_i;
     size_t towers_i;
     bool show_hitboxes;
+    bool display_sprites;
 } rf_t;
 
 int radar(char **argv);
@@ -84,7 +87,8 @@ sprite_t *create_sprites(size_t nb, char const *texture_path,
     sfVector2f scale);
 int set_pos_scale(sprite_t *sprites, size_t nb, sfVector2f pos,
     sfVector2f scale);
-int move_sprites(rf_t *rf, sprite_t *sprites, size_t nb, float delta);
+
+int move_sprites(rf_t *rf, size_t nb, sfClock *delta_clock, float delta);
 int create_plane_hitboxes(sprite_t *sprites, size_t nb);
 int create_tower_hitboxes(sprite_t *sprites, size_t nb);
 #endif /* RADAR_H */
