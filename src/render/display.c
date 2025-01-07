@@ -23,7 +23,8 @@ int display_all(rf_t *rf)
     sfRenderWindow_clear(rf->window, sfBlack);
     sfRenderWindow_drawSprite(rf->window, rf->background.sprite, NULL);
     for (size_t i = 0; i < rf->planes_nb; i++)
-        if (rf->display_sprites && rf->planes[i].active)
+        if (rf->display_sprites && rf->planes[i].active &&
+            rf->planes[i].taked_off)
             display_planes(rf, i);
     for (size_t i = 0; i < rf->towers_nb; i++) {
         if (!rf->display_sprites)

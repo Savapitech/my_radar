@@ -91,6 +91,7 @@ bool calc_plane_pos(rf_t *rf, sfClock *delta_clock, size_t i, float delta)
         sfClock_getElapsedTime(delta_clock).microseconds / 1000000.0 ||
         sprites[i].sprite == NULL || !sprites[i].active)
             return true;
+    sprites[i].taked_off = sfTrue;
     sprites[i].pos.x += cosf(sprites[i].rotation) * sprites[i].speed *
         delta;
     sprites[i].pos.y += sinf(sprites[i].rotation) * sprites[i].speed *

@@ -53,6 +53,7 @@ typedef struct {
     int time_to_take_off;
     sfVector2u size;
     size_t radius;
+    bool taked_off;
     bool active;
 } sprite_t;
 
