@@ -47,6 +47,16 @@ bool plane_in_tower_area(rf_t *rf, size_t plane_i)
     return false;
 }
 
+static
+void kill_plane(sprite_t *planes, double distance, size_t i, size_t j)
+{
+    if (distance < 22) {
+        planes[i].active = sfFalse;
+        planes[j].active = sfFalse;
+        my_printf("Plane #%01d hit a plane !\n", i);
+    }
+}
+
 int plane_hit_another(sprite_t *planes, size_t i, size_t nb)
 {
     size_t j = 0;
@@ -59,11 +69,7 @@ int plane_hit_another(sprite_t *planes, size_t i, size_t nb)
             plane2_pos = planes[j].pos;
             distance = sqrt((double)pow(plane1_pos.x - plane2_pos.x, 2) +
                 (double)pow(plane1_pos.y - plane2_pos.y, 2));
-            if (distance < 22) {
-                planes[i].active = sfFalse;
-                planes[j].active = sfFalse;
-                return (j);
-            }
+            kill_plane(planes, distance, i, j);
         }
     }
     return -1;
@@ -123,10 +129,7 @@ int move_sprites(rf_t *rf, size_t nb, sfClock *delta_clock, float delta)
         }
         sfRectangleShape_setOutlineColor(rf->planes[i].hitbox,
             sfRed);
-        if (plane_hit_another(sprites, i, rf->planes_nb) != -1) {
-            rf->planes[i].active = sfFalse;
-            my_printf("Plane #%01d hit a plane !\n", i);
-        }
+        plane_hit_another(sprites, i, rf->planes_nb);
     }
     return RETURN_SUCCESS;
 }
