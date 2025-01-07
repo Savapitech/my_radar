@@ -72,12 +72,14 @@ int plane_hit_another(sprite_t *planes, size_t i, size_t nb)
 static
 void move_sprites_set_pos(sprite_t *sprites, size_t i)
 {
+    sfSprite_setOrigin(sprites[i].sprite, (sfVector2f){ 0, 0 });
     sfSprite_setRotation(sprites[i].sprite, sprites[i].rotation * 180 /
         M_PI);
     sfSprite_setPosition(sprites[i].sprite, (sfVector2f){
-        sprites[i].pos.x - 10, sprites[i].pos.y - 10});
+        sprites[i].pos.x, sprites[i].pos.y });
+    sfRectangleShape_setOrigin(sprites[i].hitbox, (sfVector2f){ 10, 10 });
     sfRectangleShape_setPosition(sprites[i].hitbox, (sfVector2f){
-        sprites[i].pos.x - 10, sprites[i].pos.y - 10});
+        sprites[i].pos.x, sprites[i].pos.y });
     sfRectangleShape_setRotation(sprites[i].hitbox, sprites[i].rotation *
         180 / M_PI);
 }
