@@ -24,9 +24,12 @@ void printf_usages(void)
 
 int main(int argc, char **argv)
 {
-    if (argc < 2)
-        return (my_puterr("./my_radar: bad arguments: 0 given but 84 is"
-            "required retry with -h\n"), RETURN_FAILURE);
+    if (argc < 2) {
+        my_puterr("./my_radar: bad arguments: 0 given but 1 is"
+            " required retry with -h\n");
+        printf_usages();
+        return RETURN_FAILURE;
+    }
     if (my_strcmp(argv[1], "-h") == 0)
         return (printf_usages(), RETURN_SUCCESS);
     MY_DEBUG_MSG("Debug mode activated");
