@@ -34,6 +34,7 @@ int display_all(rf_t *rf)
             sfRenderWindow_drawCircleShape(rf->window,
                 rf->towers[i].t_hitbox, NULL);
     }
+    sfRenderWindow_drawText(rf->window, rf->timer_text, NULL);
     sfRenderWindow_display(rf->window);
     return RETURN_SUCCESS;
 }

@@ -23,17 +23,21 @@ int radar_loop(rf_t *rf)
 {
     sfClock *delta_clock = sfClock_create();
     sfTime delta;
+    char score[10];
 
     if (!delta_clock)
         return FAILURE_MSG("Cannot create delta clock");
     sfRenderWindow_setFramerateLimit(rf->window, 30);
-    for (; sfRenderWindow_isOpen(rf->window);) {
+    for (; sfRenderWindow_isOpen(rf->window) && rf->killed_planes <
+        rf->planes_nb - 1;) {
         display_all(rf);
         event_handler(rf);
         delta = sfClock_getElapsedTime(delta_clock);
         move_sprites(rf, rf->planes_nb, delta_clock,
             (delta.microseconds - rf->prev_delta) / 1000000.0);
         rf->prev_delta = delta.microseconds;
+        my_numstr(score, delta.microseconds / 1000000.0);
+        sfText_setString(rf->timer_text, score);
     }
     sfClock_destroy(delta_clock);
     return RETURN_SUCCESS;
@@ -63,6 +67,10 @@ int radar(char **argv)
     if (create_tower_hitboxes(rf.towers, rf.towers_nb) == RETURN_FAILURE)
         return RETURN_FAILURE;
     if (create_background(&rf, "assets/img/background.png") == RETURN_FAILURE)
+        return RETURN_FAILURE;
+    rf.timer_text = create_text((sfVector2f){ 1850, 3 }, (sfVector2f){ 1, 1 },
+        "0.0", sfWhite);
+    if (rf.timer_text == NULL)
         return RETURN_FAILURE;
     radar_loop(&rf);
     if (destroy_all(&rf))

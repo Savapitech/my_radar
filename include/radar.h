@@ -63,10 +63,12 @@ typedef struct {
     sprite_t background;
     size_t planes_nb;
     size_t towers_nb;
+    size_t killed_planes;
     sfInt64 prev_delta;
     sfRenderWindow *window;
     size_t planes_i;
     size_t towers_i;
+    sfText *timer_text;
     bool show_hitboxes;
     bool display_sprites;
 } rf_t;
@@ -88,6 +90,10 @@ sprite_t *create_sprites(size_t nb, char const *texture_path,
     sfVector2f scale);
 int set_pos_scale(sprite_t *sprites, size_t nb, sfVector2f pos,
     sfVector2f scale);
+
+// text
+sfText *create_text(sfVector2f pos, sfVector2f scale, char const *base_text,
+    sfColor color);
 
 int move_sprites(rf_t *rf, size_t nb, sfClock *delta_clock, float delta);
 int create_plane_hitboxes(sprite_t *sprites, size_t nb);
