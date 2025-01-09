@@ -12,7 +12,7 @@
 sfText *create_text(sfVector2f pos, sfVector2f scale, char const *base_text,
     sfColor color)
 {
-    sfFont *font = sfFont_createFromFile("assets/fonts/Roboto-Black.ttf");
+    sfFont *font = sfFont_createFromFile(R_TIMER_FONT_PATH);
     sfText *text;
 
     if (font == NULL)

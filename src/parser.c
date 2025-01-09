@@ -91,13 +91,13 @@ int count_planes_towers(rf_t *rf, FILE *file)
 static
 int create_all_sprites(rf_t *rf)
 {
-    rf->planes = create_sprites(rf->planes_nb, "assets/img/plane.png",
+    rf->planes = create_sprites(rf->planes_nb, R_PLANE_TEXTURE_PATH,
         (sfVector2f){ 0.07125, 0.07125 });
     if (rf->planes == NULL)
         return RETURN_FAILURE;
     if (create_plane_hitboxes(rf->planes, rf->planes_nb) == RETURN_FAILURE)
         return RETURN_FAILURE;
-    rf->towers = create_sprites(rf->towers_nb, "assets/img/tower.png",
+    rf->towers = create_sprites(rf->towers_nb, R_TOWER_TEXTURE_PATH,
         (sfVector2f){ 0.15, 0.15 });
     if (rf->towers == NULL)
         return RETURN_FAILURE;

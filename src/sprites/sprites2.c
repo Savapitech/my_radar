@@ -56,7 +56,6 @@ void kill_plane(rf_t *rf, double distance, size_t i, size_t j)
         planes[i].active = sfFalse;
         planes[j].active = sfFalse;
         rf->killed_planes++;
-        my_printf("Plane #%01d hit a plane !\n", i);
     }
 }
 
@@ -110,7 +109,8 @@ bool calc_plane_pos(rf_t *rf, sfClock *delta_clock, size_t i, float delta)
         delta;
     if (!sprites[i].active || (sprites[i].pos.x - sprites[i].end_pos.x < 1
         && sprites[i].pos.y - sprites[i].end_pos.y < 1)) {
-        sprites[i].active = sfFalse;
+            sprites[i].active = sfFalse;
+            rf->killed_planes++;
             return true;
     }
     move_sprites_set_pos(sprites, i);

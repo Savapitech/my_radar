@@ -14,6 +14,16 @@
 static
 int destroy_all(rf_t *rf)
 {
+    for (size_t i = 0; i < rf->planes_nb; i++)
+        if (rf->planes[i].sprite != NULL)
+            sfSprite_destroy(rf->planes[i].sprite);
+    sfTexture_destroy(rf->planes->texture);
+    for (size_t i = 0; i < rf->towers_nb; i++)
+        if (rf->towers[i].sprite != NULL)
+            sfSprite_destroy(rf->towers[i].sprite);
+    sfTexture_destroy(rf->towers->texture);
+    sfSprite_destroy(rf->background.sprite);
+    sfText_destroy(rf->timer_text);
     sfRenderWindow_destroy(rf->window);
     return RETURN_SUCCESS;
 }
@@ -27,7 +37,7 @@ int radar_loop(rf_t *rf)
 
     if (!delta_clock)
         return FAILURE_MSG("Cannot create delta clock");
-    sfRenderWindow_setFramerateLimit(rf->window, 30);
+    sfRenderWindow_setFramerateLimit(rf->window, 24);
     for (; sfRenderWindow_isOpen(rf->window) && rf->killed_planes <
         rf->planes_nb - 1;) {
         display_all(rf);
@@ -66,7 +76,7 @@ int radar(char **argv)
         return RETURN_FAILURE;
     if (create_tower_hitboxes(rf.towers, rf.towers_nb) == RETURN_FAILURE)
         return RETURN_FAILURE;
-    if (create_background(&rf, "assets/img/background.png") == RETURN_FAILURE)
+    if (create_background(&rf, R_BACKGROUND_TEXTURE_PATH) == RETURN_FAILURE)
         return RETURN_FAILURE;
     rf.timer_text = create_text((sfVector2f){ 1850, 3 }, (sfVector2f){ 1, 1 },
         "0.0", sfWhite);

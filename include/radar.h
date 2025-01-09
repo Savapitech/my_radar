@@ -10,13 +10,11 @@
     #include "lib.h"
     #include <SFML/Graphics.h>
     #define RADAR_H
+
+// utils
     #define OMIT
     #define RETURN_SUCCESS 0
     #define RETURN_FAILURE 84
-    #define FAILURE_MSG(str) (my_puterr(str "\n"), RETURN_FAILURE)
-    #define FAILURE_MSG_PTR(str) (my_puterr(str "\n"), NULL)
-    #define R_WINDOW_NAME "War Thunder Multiplayer"
-    #define R_WINDOW_SIZE 1920, 1080
     #define MICRO_TO_SEC(time) time.microseconds / 1000000.0
 
     #ifdef R_DEBUG_MODE
@@ -40,6 +38,18 @@
         #define MY_DEBUG_CALL(func, ...) OMIT
         #define MY_DEBUG_USED __attribute__((unused))
     #endif
+
+// settings
+    #define FAILURE_MSG(str) (my_puterr(str "\n"), RETURN_FAILURE)
+    #define FAILURE_MSG_PTR(str) (my_puterr(str "\n"), NULL)
+    #define R_WINDOW_NAME "War Thunder Multiplayer"
+    #define R_WINDOW_SIZE 1920, 1080
+
+// textures/fonts
+    #define R_PLANE_TEXTURE_PATH "assets/img/plane.png"
+    #define R_TOWER_TEXTURE_PATH "assets/img/tower.png"
+    #define R_BACKGROUND_TEXTURE_PATH "assets/img/background.png"
+    #define R_TIMER_FONT_PATH "assets/fonts/Roboto-Black.ttf"
 
 typedef struct {
     sfTexture *texture;
