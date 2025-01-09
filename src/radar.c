@@ -14,18 +14,26 @@
 static
 int destroy_all(rf_t *rf)
 {
-    for (size_t i = 0; i < rf->planes_nb; i++)
+    for (size_t i = 0; i < rf->planes_nb; i++) {
         if (rf->planes[i].sprite != NULL)
             sfSprite_destroy(rf->planes[i].sprite);
+        if (rf->planes[i].hitbox != NULL)
+            sfRectangleShape_destroy(rf->planes[i].hitbox);
+    }
     sfTexture_destroy(rf->planes->texture);
-    for (size_t i = 0; i < rf->towers_nb; i++)
+    for (size_t i = 0; i < rf->towers_nb; i++) {
         if (rf->towers[i].sprite != NULL)
             sfSprite_destroy(rf->towers[i].sprite);
+        if (rf->towers[i].t_hitbox != NULL)
+            sfCircleShape_destroy(rf->towers[i].t_hitbox);
+    }
     sfTexture_destroy(rf->towers->texture);
     sfSprite_destroy(rf->background.sprite);
+    sfTexture_destroy(rf->background.texture);
     sfText_destroy(rf->timer_text);
     sfRenderWindow_destroy(rf->window);
-    return RETURN_SUCCESS;
+    free(rf->planes);
+    return (free(rf->towers), RETURN_SUCCESS);
 }
 
 static
