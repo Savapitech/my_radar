@@ -13,6 +13,29 @@
 #include "lib.h"
 #include "radar.h"
 
+
+static
+bool validate_entity_line(char *buffer, int nb_digit)
+{
+    int old_nb_digit = nb_digit;
+
+    buffer++;
+    if (!isblank(*buffer))
+        return false;
+    for (size_t i = 0; buffer[i] != '\0'; i++)
+        if (isalpha(buffer[i]))
+            return false;
+    for (int i = 0; i < old_nb_digit; i++) {
+        for (; isblank(*buffer) && *buffer != '\0'; buffer++);
+        if (isdigit(*buffer))
+            nb_digit--;
+        for (; isdigit(*buffer) && *buffer != '\0'; buffer++);
+    }
+    if (nb_digit != 0)
+        return false;
+    return true;
+}
+
 static
 void parse_plane_buffer(rf_t *rf, char *buffer, size_t i)
 {
@@ -35,9 +58,9 @@ int parse_plane(rf_t *rf, char *buffer)
 {
     size_t i = rf->planes_i;
 
-    buffer++;
-    if (!isdigit(*buffer) && !isblank(*buffer))
+    if (!validate_entity_line(buffer, 6))
         return RETURN_FAILURE;
+    buffer++;
     parse_plane_buffer(rf, buffer, i);
     MY_DEBUG("Plane #%01d start pos: %01d, %01d\n", i,
         (int)rf->planes[i].end_pos.x, (int)rf->planes[i].end_pos.y);
@@ -52,9 +75,9 @@ int parse_tower(rf_t *rf, char *buffer)
 {
     size_t i = rf->towers_i;
 
-    buffer++;
-    if (!isdigit(*buffer) && !isblank(*buffer))
+    if (!validate_entity_line(buffer, 3))
         return RETURN_FAILURE;
+    buffer++;
     rf->towers[i].pos.x = (float)my_getnbr(buffer);
     buffer += baby_intlen((int)rf->towers[i].pos.x, 10) + 1;
     rf->towers[i].pos.y = (float)my_getnbr(buffer);
