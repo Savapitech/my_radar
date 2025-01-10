@@ -144,9 +144,9 @@ int parser(rf_t *rf, char *path)
     for (; getline(&buffer, &buff_size, file) != -1;) {
         MY_DEBUG("Script file: %s", buffer);
         if (*buffer == 'A' && parse_plane(rf, buffer) == RETURN_FAILURE)
-            return FAILURE_MSG("Cannot parse plane !");
+            return FAILURE_MSG("Invalid script file, cannot parse plane !");
         if (*buffer == 'T' && parse_tower(rf, buffer) == RETURN_FAILURE)
-            return FAILURE_MSG("Cannot parse tower !");
+            return FAILURE_MSG("Invalid script file, cannot parse tower !");
     }
     return (fclose(file), RETURN_SUCCESS);
 }
